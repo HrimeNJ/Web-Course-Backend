@@ -4,7 +4,7 @@ import { Controller, Get, Post } from '@midwayjs/core';
 export class HomeController {
   @Get('/')
   async home(): Promise<string> {
-    return 'Hello Midwayjs!';
+    return 'Welcome to Kanban!';
   }
 
   @Post('/Create')
@@ -12,5 +12,5 @@ export class HomeController {
     return 'LogIn Page created successfully';
   }
 
-  
+
 }
