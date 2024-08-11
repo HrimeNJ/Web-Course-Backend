@@ -5,13 +5,14 @@
   "private": true,
   "dependencies": {
     "@midwayjs/bootstrap": "3.16.2",
-    "@midwayjs/core": "3.16.2",
+    "@midwayjs/core": "^3.16.2",
     "@midwayjs/cross-domain": "3.16.2",
+    "@midwayjs/decorator": "^3.16.2",
+    "@midwayjs/i18n": "^3.16.2",
     "@midwayjs/info": "3.16.2",
-    "@midwayjs/koa": "3.16.2",
+    "@midwayjs/koa": "^3.16.2",
     "@midwayjs/logger": "^3.1.0",
     "@midwayjs/validate": "3.16.2",
-    "@midwayjs/i18n": "^3.16.2",
     "@midwayjs/ws": "3.16.2",
     "axios": "^1.7.2"
   },
