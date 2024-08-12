@@ -10,11 +10,15 @@
     "@midwayjs/decorator": "^3.16.2",
     "@midwayjs/i18n": "^3.16.2",
     "@midwayjs/info": "3.16.2",
-    "@midwayjs/koa": "^3.16.2",
+    "@midwayjs/koa": "^3.16.6",
     "@midwayjs/logger": "^3.1.0",
+    "@midwayjs/upload": "^3.16.6",
     "@midwayjs/validate": "3.16.2",
     "@midwayjs/ws": "3.16.2",
-    "axios": "^1.7.2"
+    "axios": "^1.7.2",
+    "formidable": "^3.5.1",
+    "koa-body": "^6.0.1",
+    "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "@midwayjs/mock": "3.16.2",

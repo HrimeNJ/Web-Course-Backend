@@ -1,4 +1,4 @@
-import { Provide, Controller, Post, Body, Inject, Get, Query } from '@midwayjs/decorator';
+import { Provide, Controller, Post, Body, Inject, Get, Query, Files } from '@midwayjs/decorator';
 import { Context } from '@midwayjs/koa';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -21,6 +21,8 @@ export class TaskController {
       tasks  // 添加tasks数据
     };
 
+    console.log(contentToSave);
+
     try {
       fs.writeFileSync(filePath, JSON.stringify(contentToSave, null, 2));  // 保存到文件
       return { message: 'Tasks saved successfully!' };
@@ -29,6 +31,24 @@ export class TaskController {
       return { message: 'Failed to save tasks', error };
     }
   }
+
+  @Post('/files')
+    async uploadFile(@Files() files: any) {
+    if (!files || files.length === 0) {
+        return { message: 'No file uploaded' };
+    }
+
+    const file = files[0]; // 获取第一个文件（假设只上传一个文件）
+    const filePath = path.join(__dirname, 'uploads', file.filename); // 上传路径
+
+    try {
+        fs.writeFileSync(filePath, file.data); // 保存到本地
+        return { message: 'File uploaded successfully!' };
+    } catch (error) {
+        console.error('Error saving file:', error);
+        return { message: 'Failed to upload file', error };
+    }
+    }
 
   @Get('/')
   async getTasks(@Query('email') email: string) {
