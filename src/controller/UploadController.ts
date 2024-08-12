@@ -12,13 +12,12 @@ export class UploadController {
   async uploadFile(@Files() files: any, @Param('taskId') taskId: string) {
     console.log('Received request for taskId:', taskId);
     console.log('Files received:', files);
-    
     if (!taskId) {
       this.ctx.status = 400;
       return { message: 'Task ID is required' };
     }
 
-    const file = files?.attachment;
+    const file = files ? files[0] : null;
     if (!file) {
       this.ctx.status = 400;
       return { message: 'Attachment file is required' };
@@ -32,7 +31,7 @@ export class UploadController {
       }
 
       const filePath = path.join(uploadDir, file.filename);
-      fs.writeFileSync(filePath, file.buffer);
+      fs.copyFileSync(file.data, filePath);         //同步处理文件
 
       return {
         message: 'File uploaded successfully!',

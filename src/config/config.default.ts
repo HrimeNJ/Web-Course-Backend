@@ -17,7 +17,7 @@ export default {
   upload: {
     mode: 'file',
     fileSize: '10mb',
-    whitelist: ['.png', '.jpg', '.jpeg', '.pdf', 'txt'], // 设置允许上传的文件类型
+    whitelist: ['.png', '.jpg', '.jpeg', '.pdf', '.txt', '.xml', '.xlsx', '.doc', '.docx', '.ppt'], // 设置允许上传的文件类型
     tmpdir: join(__dirname, '../../uploads/tmp'), // 临时文件存放路径
     cleanTimeout: 5 * 60 * 1000, // 清理临时文件的间隔时间
     base64: false,
