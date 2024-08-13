@@ -13,13 +13,13 @@ export class TaskController {
 
   @Post('/')
   async saveTasks(@Body() data: any) {
-    const { email, password, tasks } = data;  // 从请求体中获取email, password 和 tasks
-    const filePath = path.join(__dirname, `../tasks_${email}.json`);  // 根据email生成独特的文件路径
+    const { email, password, panels } = data;  // 从请求体中获取email, password 和 tasks
+    const filePath = path.join(__dirname, `../panels_${email}.json`);  // 根据email生成独特的文件路径
 
     const contentToSave = {
       email,  // 添加email信息
       password,  // 添加password信息
-      tasks  // 添加tasks数据
+      panels  // 添加tasks数据
     };
 
     console.log(contentToSave);
@@ -60,24 +60,26 @@ export class TaskController {
     }
   }
 
-  @Get('/')
+  @Get('/') 
   async getTasks(@Query('email') email: string) {
     console.log(email); 
-      const filePath = path.join(__dirname, `../tasks_${email}.json`);  // 根据email生成独特的文件路径
-      
-      if(fs.existsSync(filePath)){
-        console.log(`tasks_${email}.json exists`);
-        const content = fs.readFileSync(filePath, 'utf-8');
-        const data = JSON.parse(content);
-        const tasks = data.tasks;
-        return { success: true ,message: 'Tasks retrieved successfully!', tasks };
-      }else{
-        const emptyTasks = { email: email, password: [], tasks: { todo: [], doing: [], done: [] }};
-        fs.writeFileSync(filePath, JSON.stringify(emptyTasks, null, 2));
-        const tasks = emptyTasks.tasks;
-        return { success: true ,message: 'Tasks retrieved successfully!', tasks };
-      }
+    const filePath = path.join(__dirname, `../panels_${email}.json`);  // 根据 email 生成独特的文件路径
+    
+    if (fs.existsSync(filePath)) {
+      console.log(`panels_${email}.json exists`);
+      const content = fs.readFileSync(filePath, 'utf-8');
+      const data = JSON.parse(content);
+      const panels = data.panels;  // 获取 panels 数据
+      return { success: true, message: 'Panels retrieved successfully!', panels };
+    } else {
+      // 如果文件不存在，创建一个空的 panels 文件并返回
+      const emptyPanels = { email: email, password: [], panels: [{ todo: [], doing: [], done: [] }] };  // 创建初始 panels
+      fs.writeFileSync(filePath, JSON.stringify(emptyPanels, null, 2));
+      const panels = emptyPanels.panels;
+      return { success: true, message: 'Panels retrieved successfully!', panels };
+    }
   }
+  
 
 
 
