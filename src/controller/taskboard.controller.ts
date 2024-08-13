@@ -1,5 +1,6 @@
-import { Provide, Controller, Post, Body, Inject, Get, Query, Files } from '@midwayjs/decorator';
+import { Provide, Controller, Post, Body, Inject, Get, Query, Param } from '@midwayjs/decorator';
 import { Context } from '@midwayjs/koa';
+import { join } from 'path';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -32,23 +33,32 @@ export class TaskController {
     }
   }
 
-  @Post('/files')
-    async uploadFile(@Files() files: any) {
-    if (!files || files.length === 0) {
-        return { message: 'No file uploaded' };
-    }
+  @Get('/:taskId/attachments')
+  async getAttachment(@Param('taskId') taskId: string) {
+    const dirPath = join(__dirname, '../../dist/uploads', taskId);
+    
+    // 确保文件存在，可以加一些检查逻辑
+    if (fs.existsSync(dirPath)) {
+      const files = fs.readdirSync(dirPath);
 
-    const file = files[0]; // 获取第一个文件（假设只上传一个文件）
-    const filePath = path.join(__dirname, 'uploads', file.filename); // 上传路径
-
-    try {
-        fs.writeFileSync(filePath, file.data); // 保存到本地
-        return { message: 'File uploaded successfully!' };
-    } catch (error) {
-        console.error('Error saving file:', error);
-        return { message: 'Failed to upload file', error };
+      if(files.length > 0) {
+        // 获取最后一个文件名
+        const fileName = files[files.length - 1];
+        const filePath = path.join(dirPath, fileName);
+        const fileStream = fs.createReadStream(filePath);
+        
+        this.ctx.set('Content-Type', 'application/octet-stream');
+        this.ctx.set('Content-Disposition', `attachment; filename=${fileName}`);
+        return fileStream;
+      } else {
+        this.ctx.throw(404, 'Not found');
+      }
+    } else {
+      console.log(`File ${dirPath} not found`);
+      console.log(`dirName: ${dirPath}`);
+      this.ctx.throw(404, 'File not found');
     }
-    }
+  }
 
   @Get('/')
   async getTasks(@Query('email') email: string) {
@@ -68,4 +78,7 @@ export class TaskController {
         return { success: true ,message: 'Tasks retrieved successfully!', tasks };
       }
   }
+
+
+
 }

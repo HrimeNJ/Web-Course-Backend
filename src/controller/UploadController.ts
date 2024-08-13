@@ -24,6 +24,8 @@ export class UploadController {
     }
 
     const uploadDir = path.join(__dirname, '../uploads', taskId);
+    // console.log('Dirneme: ', __dirname);
+    // console.log('Uploading file:', uploadDir);
 
     try {
       if (!fs.existsSync(uploadDir)) {
@@ -31,6 +33,7 @@ export class UploadController {
       }
 
       const filePath = path.join(uploadDir, file.filename);
+      // console.log('Copying file to:', filePath);
       fs.copyFileSync(file.data, filePath);         //同步处理文件
 
       return {
